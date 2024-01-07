@@ -9,6 +9,7 @@ import (
 )
 
 type Config struct {
+	DBDriver       string `mapstructure:"DB_DRIVER"`
 	DBHost         string `mapstructure:"DB_HOST"`
 	DBUserName     string `mapstructure:"DB_USER"`
 	DBUserPassword string `mapstructure:"DB_PASSWORD"`
@@ -26,12 +27,14 @@ func LoadConfig() (config Config, err error) {
 		log.Fatal("Error loading .env file")
 	}
 
+	config.DBDriver = os.Getenv("DB_DRIVER")
 	config.DBHost = os.Getenv("DB_HOST")
 	config.DBUserName = os.Getenv("DB_USER")
 	config.DBUserPassword = os.Getenv("DB_PASSWORD")
 	config.DBName = os.Getenv("DB_DATABASE")
 	config.ClientOrigin = os.Getenv("CLIENT_ORIGIN")
 	config.JWTSecret = os.Getenv("JWT_SECRET")
+
 	config.AppPort, err = strconv.Atoi(os.Getenv("APP_PORT"))
 	if err != nil {
 		log.Fatal("Error converting value of APP_PORT to integer")
