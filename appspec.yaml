@@ -8,3 +8,4 @@ Resources:
         LoadBalancerInfo:
           ContainerName: "backend" # must be same container_name in service - task
           ContainerPort: 8088
+          

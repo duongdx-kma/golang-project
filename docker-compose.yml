@@ -48,3 +48,4 @@ networks:
     name: app_network
 volumes:
   app_db_volume: {}
+  
