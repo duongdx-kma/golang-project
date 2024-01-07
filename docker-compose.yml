@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: backend_prod
+    image: backend_prod_image
+    networks:
+      - app_network
+    ports:
+      - "${APP_PORT}:8088"
+    depends_on:
+      - database
+    environment:
+      - DB_DRIVER=${DB_DRIVER}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_PORT=${DB_PORT}
+      - CLIENT_ORIGIN=${CLIENT_ORIGIN}
+      - JWT_SECRET=${JWT_SECRET}
+      - APP_PORT=${APP_PORT}
+      - APP_ENV=${APP_ENV}
+     
+  database:
+    build: 
+      context: docker/mysql
+      dockerfile: Dockerfile
+    container_name: mysql_prod
+    image: mysql_prod_image
+    networks:
+      - app_network
+    volumes:
+      - app_db_volume:/var/lib/mysql
+    environment:
+      - MYSQL_USER=duongdx
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+    ports:
+      - "${DB_PORT}:3306"
+  
+networks:
+  app_network:
+    name: app_network
+volumes:
+  app_db_volume: {}
