@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   backend:
+    restart: always
     build:
       context: ./
       dockerfile: Dockerfile
@@ -24,6 +25,8 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - APP_PORT=${APP_PORT}
       - APP_ENV=${APP_ENV}
+      - AWS_REGION=${AWS_REGION}
+      - SECRET_MANAGER_KEY=${SECRET_MANAGER_KEY}
      
   database:
     build: 

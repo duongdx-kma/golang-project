@@ -19,6 +19,7 @@ type User struct {
 
 type AuthSchema struct {
 	Token   string `json:"token"`
+	IsAdmin bool   `json:"is_admin"`
 	Message string `json:"message"`
 }
 

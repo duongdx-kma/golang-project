@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS  users
 );
 
 INSERT INTO db_business.users (
-    id,
     name,
     address,
     password,
@@ -24,7 +23,6 @@ INSERT INTO db_business.users (
     updated_at,
     deleted_at
 ) VALUES (
-    1,
     'duongdx',
     'VN',
     '$2a$10$mozDKCPtZJYFGzqsY/rmrOhG98m5WljKS/FTFW82oY8xwwwh1XFkG',

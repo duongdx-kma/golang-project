@@ -144,7 +144,7 @@ func (db *UserRepository) Detail(ctx context.Context, id string) (models.User, e
 	defer db.SQL.Close()
 
 	user := models.User{}
-	query := `SELECT id, name, address, password, is_admin FROM users WHERE id=? AND deleted_at IS NULL`
+	query := `SELECT id, name, address, password, age, is_admin FROM users WHERE id=? AND deleted_at IS NULL`
 	err := db.SQL.DB.Get(&user, query, id)
 
 	if err != nil {

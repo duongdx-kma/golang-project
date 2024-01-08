@@ -84,6 +84,7 @@ func (u *UserController) Authentication(e echo.Context) error {
 
 	return e.JSON(http.StatusOK, models.AuthSchema{
 		Token:   token,
+		IsAdmin: user.IsAdmin,
 		Message: "Login successful",
 	})
 }

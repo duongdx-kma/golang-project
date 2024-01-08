@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$APP_ENV" = "dev" ]; then
+if [ "$APP_ENV" != "prod" ]; then
     echo Development environment
     rm .env
     echo "Creating env file"

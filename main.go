@@ -12,6 +12,7 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 func main() {
@@ -20,6 +21,15 @@ func main() {
 	if err != nil {
 		log.Fatal("Loading environment error")
 		return
+	}
+
+	if env.AppEnvironment == "prod" {
+		log.Println("This is a prod environment -> will call data from secret manager")
+		secretData := initializers.GetSecretManager(env.SecretManagerKey, env.Region)
+		env.DBHost = secretData.Host
+		env.DBPort = secretData.Port
+		env.DBUserPassword = secretData.Password
+		env.DBUserName = secretData.Username
 	}
 
 	sql := initializers.SQL{
@@ -39,11 +49,10 @@ func main() {
 		sql.DatabaseName,
 	)
 
-	log.Printf("Running on mainnnnnnnnnnnn")
-
 	MigrateRunning(env.DBDriver, "file://databases/migrations", dbSource)
 
 	server := echo.New()
+	server.Use(middleware.CORS())
 	router.UserInit(server, &sql)
 
 	server.Logger.Fatal(server.Start(fmt.Sprintf(":%d", env.AppPort)))
@@ -70,7 +79,7 @@ func MigrateRunning(sqlDriver string, migrationsURL string, dbSource string) {
 	)
 
 	if err := migration.Up(); err != nil {
-		log.Fatal("Cannot migrate database", err)
+		log.Println("Cannot migrate database: ", err)
 	}
 
 	log.Println("database migrated successfully !")
