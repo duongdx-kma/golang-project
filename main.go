@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"duongdx/example/initializers"
 	"duongdx/example/router"
+	mySocket "duongdx/example/websocket"
 	"fmt"
 	"log"
 
@@ -55,6 +56,15 @@ func main() {
 	server.Use(middleware.CORS())
 	router.UserInit(server, &sql)
 
+	// socket here
+	server.Use(middleware.Logger())
+	server.Use(middleware.Recover())
+	server.Static("/", "../public")
+	server.GET("ws", func(ctx echo.Context) error {
+		mySocket.NewWebSocket(ctx, &sql)
+
+		return nil
+	})
 	server.Logger.Fatal(server.Start(fmt.Sprintf(":%d", env.AppPort)))
 }
 

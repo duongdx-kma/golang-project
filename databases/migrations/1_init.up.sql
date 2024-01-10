@@ -22,13 +22,15 @@ INSERT INTO db_business.users (
     created_at,
     updated_at,
     deleted_at
-) VALUES (
+) SELECT
     'duongdx',
     'VN',
-    '$2a$10$mozDKCPtZJYFGzqsY/rmrOhG98m5WljKS/FTFW82oY8xwwwh1XFkG',
+    '$2a$10$mozDKCPtZJYFGzqsY/rmrOhG98m5WljKS/FTFW82oY8xwwwh1XFkG', -- password
     20,
     1,
     null,
     null,
     null
-);
+ FROM DUAL
+WHERE NOT EXISTS
+  (SELECT name FROM users WHERE name='duongdx');
