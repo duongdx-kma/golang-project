@@ -11,7 +11,7 @@ import (
 
 type ProjectInterface interface {
 	CreateProject(createProjectSchema models.CreateProjectSchema) (models.ProjectSelected, error)
-	FindAll(ctx context.Context) ([]models.ProjectSelected, error)
+	FindAll(ctx context.Context, userId int64) ([]models.ProjectSelected, error)
 }
 
 type ProjectRepository struct {
@@ -69,35 +69,57 @@ func (db *ProjectRepository) CreateProject(createProjectSchema models.CreateProj
 	return project, nil
 }
 
-func (db *ProjectRepository) FindAll(ctx context.Context) ([]models.ProjectSelected, error) {
+func (db *ProjectRepository) FindAll(ctx context.Context, userId int64) ([]models.ProjectSelected, error) {
 	// Open mysql connection
 	db.SQL.Connect()
 	// Close mysql connection
 	defer db.SQL.Close()
 
-	var projects []models.ProjectSelected
-	query := "SELECT * FROM users WHERE deleted_at IS NULL"
-	err := db.SQL.DB.SelectContext(ctx, &projects, query)
+	var projects []models.Project
+	query := `
+		SELECT 
+			projects.project_id,
+			name,
+			temp.user_id
+		FROM projects 
+		JOIN project_user ON projects.project_id = project_user.project_id
+			AND project_user.user_id = ?
+		JOIN (SELECT 
+				project_user.project_id,
+				project_user.user_id
+			FROM project_user
+		) AS temp ON temp.project_id = projects.project_id
+		WHERE projects.deleted_at IS NULL
+		ORDER BY projects.created_at DESC
+	`
+
+	err := db.SQL.DB.SelectContext(ctx, &projects, query, userId)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Get projects errorrrr: ", err)
 
-		return projects, err
+		return []models.ProjectSelected{}, err
 	}
 
-	for index, project := range projects {
-		var users []int64
-		queryRelation := "SELECT user_id FROM project_user WHERE deleted_at IS NULL and project_id=?"
+	projectSelected := make(map[int64]models.ProjectSelected)
+	temUser := make(map[int64][]int64)
 
-		err := db.SQL.DB.SelectContext(ctx, &users, queryRelation, project.ProjectId)
+	for _, project := range projects {
+		log.Println("project.ProjectId", project.ProjectId)
+		temUser[project.ProjectId] = append(temUser[project.ProjectId], int64(project.UserId))
 
-		if err != nil {
-			log.Println("get relation failed !!!!!!!!!!!!!!!!!!!!")
+		projectSelected[project.ProjectId] = models.ProjectSelected{
+			EventName: "create/project",
+			ProjectId: project.ProjectId,
+			Name:      project.Name,
+			Users:     temUser[project.ProjectId],
 		}
-
-		(&projects[index]).EventName = "create/project"
-		(&projects[index]).Users = users
 	}
 
-	return projects, nil
+	v := make([]models.ProjectSelected, 0)
+	for _, value := range projectSelected {
+		v = append(v, value)
+	}
+
+	return v, nil
 }

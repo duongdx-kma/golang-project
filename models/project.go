@@ -8,6 +8,7 @@ import (
 type Project struct {
 	ProjectId int64      `json:"project_id,omitempty" db:"project_id,omitempty"`
 	Name      string     `json:"name" db:"name,omitempty"`
+	UserId    int64      `json:"user_id,omitempty" db:"user_id,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty" db:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty" db:"updated_at,omitempty"`
 	DeletedAt *time.Time `json:"deleted_at,omitempty" db:"deleted_at,omitempty"`

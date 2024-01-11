@@ -55,7 +55,7 @@ func main() {
 	server := echo.New()
 	server.Use(middleware.CORS())
 	router.UserInit(server, &sql)
-
+	router.InitSocket(server, &sql)
 	// socket here
 	server.Use(middleware.Logger())
 	server.Use(middleware.Recover())
