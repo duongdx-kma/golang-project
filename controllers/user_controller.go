@@ -77,12 +77,13 @@ func (u *UserController) Authentication(e echo.Context) error {
 
 	// Generate encoded token and send it as response.
 	token, err := tokenAlgorithm.SignedString([]byte(secretKey))
-	log.Println("aaaaaaaaaaaaa", secretKey, []byte(secretKey))
+
 	if err != nil {
 		return err
 	}
 
 	return e.JSON(http.StatusOK, models.AuthSchema{
+		User:    user,
 		Token:   token,
 		IsAdmin: user.IsAdmin,
 		Message: "Login successful",

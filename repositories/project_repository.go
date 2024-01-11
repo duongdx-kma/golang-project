@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	database "duongdx/example/initializers"
 	"duongdx/example/models"
 	"fmt"
@@ -10,6 +11,7 @@ import (
 
 type ProjectInterface interface {
 	CreateProject(createProjectSchema models.CreateProjectSchema) (models.ProjectSelected, error)
+	FindAll(ctx context.Context) ([]models.ProjectSelected, error)
 }
 
 type ProjectRepository struct {
@@ -65,4 +67,37 @@ func (db *ProjectRepository) CreateProject(createProjectSchema models.CreateProj
 	}
 
 	return project, nil
+}
+
+func (db *ProjectRepository) FindAll(ctx context.Context) ([]models.ProjectSelected, error) {
+	// Open mysql connection
+	db.SQL.Connect()
+	// Close mysql connection
+	defer db.SQL.Close()
+
+	var projects []models.ProjectSelected
+	query := "SELECT * FROM users WHERE deleted_at IS NULL"
+	err := db.SQL.DB.SelectContext(ctx, &projects, query)
+
+	if err != nil {
+		log.Fatal(err)
+
+		return projects, err
+	}
+
+	for index, project := range projects {
+		var users []int64
+		queryRelation := "SELECT user_id FROM project_user WHERE deleted_at IS NULL and project_id=?"
+
+		err := db.SQL.DB.SelectContext(ctx, &users, queryRelation, project.ProjectId)
+
+		if err != nil {
+			log.Println("get relation failed !!!!!!!!!!!!!!!!!!!!")
+		}
+
+		(&projects[index]).EventName = "create/project"
+		(&projects[index]).Users = users
+	}
+
+	return projects, nil
 }
