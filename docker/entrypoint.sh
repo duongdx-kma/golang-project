@@ -13,6 +13,8 @@ if [ "$APP_ENV" != "prod" ]; then
     echo "CLIENT_ORIGIN=$CLIENT_ORIGIN" >> .env
     echo "JWT_SECRET=$JWT_SECRET" >> .env
     echo "APP_PORT=$APP_PORT" >> .env
+
+    cat .env
 else
     echo "Production environment"
 fi
