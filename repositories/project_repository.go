@@ -12,6 +12,7 @@ import (
 type ProjectInterface interface {
 	CreateProject(createProjectSchema models.CreateProjectSchema) (models.ProjectSelected, error)
 	FindAll(ctx context.Context, userId int64) ([]models.ProjectSelected, error)
+	GetUserId(ctx context.Context, ProjectId int64) ([]int64, error)
 }
 
 type ProjectRepository struct {
@@ -34,7 +35,7 @@ func (db *ProjectRepository) CreateProject(createProjectSchema models.CreateProj
 	result, err := db.SQL.DB.NamedExec(statement, project)
 
 	if err != nil {
-		log.Fatal("Insert data project failed", err)
+		log.Println("Insert data project failed", err)
 
 		return models.ProjectSelected{}, err
 	}
@@ -42,7 +43,7 @@ func (db *ProjectRepository) CreateProject(createProjectSchema models.CreateProj
 	// get last inserted project id
 	lastId, err := result.LastInsertId()
 	if err != nil {
-		log.Fatal("get data just have been created is fail", err)
+		log.Println("get data just have been created is fail", err)
 	}
 	project.ProjectId = lastId
 	project.Users = createProjectSchema.Users
@@ -63,7 +64,7 @@ func (db *ProjectRepository) CreateProject(createProjectSchema models.CreateProj
 
 	if err != nil {
 		log.Printf(statementRelation, createProjectSchema.Users)
-		log.Fatal("Insert relation", err)
+		log.Println("Insert relation", err)
 	}
 
 	return project, nil
@@ -105,7 +106,6 @@ func (db *ProjectRepository) FindAll(ctx context.Context, userId int64) ([]model
 	temUser := make(map[int64][]int64)
 
 	for _, project := range projects {
-		log.Println("project.ProjectId", project.ProjectId)
 		temUser[project.ProjectId] = append(temUser[project.ProjectId], int64(project.UserId))
 
 		projectSelected[project.ProjectId] = models.ProjectSelected{
@@ -122,4 +122,38 @@ func (db *ProjectRepository) FindAll(ctx context.Context, userId int64) ([]model
 	}
 
 	return v, nil
+}
+
+func (db *ProjectRepository) GetUserId(ctx context.Context, projectId int64) ([]int64, error) {
+	// Open mysql connection
+	db.SQL.Connect()
+	// Close mysql connection
+	defer db.SQL.Close()
+
+	var projects []struct {
+		ID int64 `json:"user_id" db:"user_id,omitempty"`
+	}
+
+	query := `
+		SELECT 
+			project_user.user_id
+		FROM project_user
+		WHERE project_user.project_id = ?
+	`
+
+	err := db.SQL.DB.SelectContext(ctx, &projects, query, projectId)
+
+	if err != nil {
+		log.Println("Get projects errorrrr: ", err)
+
+		return make([]int64, 0), err
+	}
+
+	users := make([]int64, 0)
+
+	for _, project := range projects {
+		users = append(users, project.ID)
+	}
+
+	return users, nil
 }

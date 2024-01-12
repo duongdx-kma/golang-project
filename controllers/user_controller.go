@@ -118,7 +118,7 @@ func (u *UserController) Create(e echo.Context) (models.User, error) {
 	user, err = u.UserRepository.Store(e.Request().Context(), (*form))
 
 	if err != nil {
-		log.Fatal("Insert failed: ", err)
+		log.Println("Insert failed: ", err)
 	}
 
 	if user.Name == "" {

@@ -20,7 +20,7 @@ func main() {
 	env, err := initializers.LoadConfig()
 
 	if err != nil {
-		log.Fatal("Loading environment error")
+		log.Println("Loading environment error")
 		return
 	}
 
@@ -74,12 +74,12 @@ func MigrateRunning(sqlDriver string, migrationsURL string, dbSource string) {
 	log.Println("Running on migrate", sqlDriver, migrationsURL, dbSource)
 	// root:password@tcp(database:3306)/db_business?multiStatements=true
 	if err != nil {
-		log.Fatal("Open connect mysql failed", err)
+		log.Println("Open connect mysql failed", err)
 	}
 
 	driver, err := mysql.WithInstance(db, &mysql.Config{})
 	if err != nil {
-		log.Fatal("Cannot create new migrate instance", err)
+		log.Println("Cannot create new migrate instance", err)
 	}
 
 	migration, err := migrate.NewWithDatabaseInstance(

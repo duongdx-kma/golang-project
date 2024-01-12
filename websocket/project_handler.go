@@ -25,7 +25,7 @@ func NewProjectHandler(sql *initializers.SQL) *ProjectHandler {
 func (h *ProjectHandler) CreateProject(form models.CreateProjectSchema) (models.ProjectSelected, error) {
 	project, err := h.ProjectRepository.CreateProject(form)
 	if err != nil {
-		log.Fatalf("Create project - Create project failed %s", err)
+		log.Printf("Create project - Create project failed %s", err)
 	}
 
 	return project, err
@@ -43,8 +43,28 @@ func (h *ProjectHandler) FindAll(e echo.Context) ([]models.ProjectSelected, erro
 	projects, err := h.ProjectRepository.FindAll(e.Request().Context(), userId)
 
 	if err != nil {
-		log.Fatalln("Find projects - find project by user_id failed", projects)
+		log.Println("Find projects - find project by user_id failed", projects)
 	}
 
 	return projects, nil
+}
+
+func (h *ProjectHandler) GetUserId(e echo.Context) ([]int64, error) {
+	users := make([]int64, 0)
+
+	projectId, err := strconv.ParseInt(e.Param("project_id"), 10, 64)
+
+	if err != nil {
+		log.Println("convert data project_id error")
+
+		return users, err
+	}
+
+	users, err = h.ProjectRepository.GetUserId(e.Request().Context(), projectId)
+
+	if err != nil {
+		log.Println("Find userssss error", err)
+	}
+
+	return users, nil
 }

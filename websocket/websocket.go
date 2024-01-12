@@ -118,6 +118,7 @@ func (ws *WebSocket) Reader(sql *initializers.SQL) {
 
 			ws.Out <- (&models.TaskSelected{
 				EventName:   event.EventName,
+				TaskId:      taskCreated.TaskId,
 				Title:       taskCreated.Title,
 				Description: taskCreated.Description,
 				ProjectId:   taskCreated.ProjectId,

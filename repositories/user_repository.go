@@ -43,7 +43,7 @@ func (db *UserRepository) Store(
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(createUserSchema.Password), bcrypt.DefaultCost)
 
 	if err != nil {
-		log.Fatal("Hashing password failed")
+		log.Println("Hashing password failed")
 	}
 
 	statement := `INSERT INTO users(name, address, age, password, created_at, updated_at)
@@ -58,7 +58,7 @@ func (db *UserRepository) Store(
 	result, err := db.SQL.DB.NamedExecContext(ctx, statement, user)
 
 	if err != nil {
-		log.Fatal("Insert data user failed", err)
+		log.Println("Insert data user failed", err)
 
 		return models.User{}, err
 	}
@@ -66,7 +66,7 @@ func (db *UserRepository) Store(
 	// get last inserted user id
 	lastId, err := result.LastInsertId()
 	if err != nil {
-		log.Fatal("get data just have been created is fail", err)
+		log.Println("get data just have been created is fail", err)
 	}
 	user.ID = lastId
 
@@ -110,7 +110,7 @@ func (db *UserRepository) Update(
 	)
 
 	if err != nil {
-		log.Fatal("Update user failed", err)
+		log.Println("Update user failed", err)
 
 		return models.User{}, err
 	}
@@ -129,7 +129,7 @@ func (db *UserRepository) FindAll(ctx context.Context) ([]models.User, error) {
 	err := db.SQL.DB.SelectContext(ctx, &users, query)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 
 		return users, err
 	}
@@ -148,7 +148,7 @@ func (db *UserRepository) Detail(ctx context.Context, id string) (models.User, e
 	err := db.SQL.DB.Get(&user, query, id)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 
 		return user, err
 	}

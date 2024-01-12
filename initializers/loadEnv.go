@@ -27,7 +27,7 @@ func LoadConfig() (config Config, err error) {
 	err = godotenv.Load()
 
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 
 	// database environment
@@ -38,7 +38,7 @@ func LoadConfig() (config Config, err error) {
 	config.DBName = os.Getenv("DB_DATABASE")
 	config.DBPort, err = strconv.Atoi(os.Getenv("DB_PORT"))
 	if err != nil {
-		log.Fatal("Error converting value of DB_PORT to integer")
+		log.Println("Error converting value of DB_PORT to integer")
 	}
 
 	// app environment
@@ -47,7 +47,7 @@ func LoadConfig() (config Config, err error) {
 	config.AppEnvironment = os.Getenv("APP_ENV")
 	config.AppPort, err = strconv.Atoi(os.Getenv("APP_PORT"))
 	if err != nil {
-		log.Fatal("Error converting value of APP_PORT to integer")
+		log.Println("Error converting value of APP_PORT to integer")
 	}
 
 	// aws environment

@@ -10,6 +10,7 @@ type Task struct {
 	Description string     `json:"description" db:"description,omitempty"`
 	Title       string     `json:"title" db:"title,omitempty"`
 	ProjectId   int64      `json:"project_id" db:"project_id,omitempty"`
+	UserId      int64      `json:"user_id" db:"user_id,omitempty"`
 	CreatedAt   *time.Time `json:"created_at,omitempty" db:"created_at,omitempty"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty" db:"updated_at,omitempty"`
 	DeletedAt   *time.Time `json:"deleted_at,omitempty" db:"deleted_at,omitempty"`

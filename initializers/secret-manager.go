@@ -27,7 +27,7 @@ func GetSecretManager(secretName, region string) SecretManager {
 
 	config, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	// Create Secrets Manager client
@@ -42,7 +42,7 @@ func GetSecretManager(secretName, region string) SecretManager {
 	if err != nil {
 		// For a list of exceptions thrown, see
 		// https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-		log.Fatal(err.Error())
+		log.Println(err.Error())
 	}
 
 	data := SecretManager{}
