@@ -1,8 +1,7 @@
 #!/bin/sh
 
-if [ "$APP_ENV" != "prod" ]; then
+if [ ! -f ".env" ]; then
     echo Development environment
-    rm .env
     echo "Creating env file"
     echo "DB_DRIVER=$DB_DRIVER" >> .env
     echo "DB_HOST=$DB_HOST" >> .env
@@ -21,7 +20,7 @@ if [ "$APP_ENV" != "prod" ]; then
 
     cat .env
 else
-    echo "Production environment"
+    echo "already have environment file"
 fi
 
 # start server
