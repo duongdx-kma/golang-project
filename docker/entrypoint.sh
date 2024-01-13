@@ -10,9 +10,14 @@ if [ "$APP_ENV" != "prod" ]; then
     echo "DB_PASSWORD=$DB_PASSWORD" >> .env
     echo "DB_DATABASE=$DB_DATABASE" >> .env
     echo "DB_PORT=$DB_PORT" >> .env
+
     echo "CLIENT_ORIGIN=$CLIENT_ORIGIN" >> .env
     echo "JWT_SECRET=$JWT_SECRET" >> .env
     echo "APP_PORT=$APP_PORT" >> .env
+    echo "APP_ENV=$APP_ENV" >> .env
+
+    echo "AWS_REGION=$AWS_REGION" >> .env
+    echo "SECRET_MANAGER_KEY=$SECRET_MANAGER_KEY" >> .env
 
     cat .env
 else
