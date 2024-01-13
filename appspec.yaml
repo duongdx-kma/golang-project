@@ -6,5 +6,5 @@ Resources:
         # <TASK_DEFINITION> will be replaced by codedeploy when the pipeline runs
         TaskDefinition: "<TASK_DEFINITION>"
         LoadBalancerInfo:
-          ContainerName: "backend" # must be same container_name in service - task
+          ContainerName: "backend-app" # must be same container_name in service - task
           ContainerPort: 8088
