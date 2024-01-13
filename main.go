@@ -7,6 +7,7 @@ import (
 	mySocket "duongdx/example/websocket"
 	"fmt"
 	"log"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate/v4"
@@ -53,13 +54,17 @@ func main() {
 	MigrateRunning(env.DBDriver, "file://databases/migrations", dbSource)
 
 	server := echo.New()
+	server.GET("/", func(ctx echo.Context) error {
+		log.Println("runninggggggggggg")
+
+		return ctx.JSON(http.StatusOK, "App Healthy")
+	})
 	server.Use(middleware.CORS())
 	router.UserInit(server, &sql)
 	router.InitSocket(server, &sql)
 	// socket here
 	server.Use(middleware.Logger())
 	server.Use(middleware.Recover())
-	server.Static("/", "../public")
 	server.GET("ws", func(ctx echo.Context) error {
 		mySocket.NewWebSocket(ctx, &sql)
 

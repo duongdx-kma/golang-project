@@ -182,8 +182,6 @@ func (ws *WebSocket) Writer() {
 }
 
 func SendClient(users []int64, rawMessage []byte) {
-	log.Println("list users:", users)
-
 	for client := range clients {
 		if slices.Contains(users, client.UserId) {
 			err := client.Conn.WriteMessage(websocket.TextMessage, rawMessage)

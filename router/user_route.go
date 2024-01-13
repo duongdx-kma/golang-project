@@ -31,9 +31,6 @@ func UserInit(e *echo.Echo, sql *database.SQL) {
 	})
 
 	// <--------normal user--------->
-	e.GET("/", func(ctx echo.Context) error {
-		return ctx.JSON(http.StatusOK, "App Healthy")
-	})
 
 	e.GET("/home", controllers.Hello, isLogedIn)
 
