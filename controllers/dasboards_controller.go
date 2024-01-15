@@ -18,6 +18,6 @@ func Hello(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response{
 		User:    user,
-		Message: "hello world ! 2024/01/14 00-15",
+		Message: "hello TEAM ! 2024/01/14 00-15",
 	})
 }
