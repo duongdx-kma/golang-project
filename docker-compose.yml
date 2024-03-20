@@ -6,8 +6,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: backend_prod
-    image: backend_prod_image
+    container_name: backend
+    image: backend_image
     networks:
       - app_network
     ports:
@@ -32,8 +32,8 @@ services:
     build: 
       context: docker/mysql
       dockerfile: Dockerfile
-    container_name: mysql_prod
-    image: mysql_prod_image
+    container_name: mysql
+    image: mysql_image
     networks:
       - app_network
     volumes:
