@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS  users
     constraint constraint_name      unique (name)
 );
 
-INSERT INTO db_business.users (
+INSERT INTO users (
     name,
     address,
     password,
