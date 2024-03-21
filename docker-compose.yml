@@ -3,11 +3,14 @@ version: "3.8"
 services:
   nginx:
     container_name: nginx-no-dockerfile
-    image: nginx:alpine
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: nginx_image
+    networks:
+      - app_network
     ports:
       - "80:80"
-    volumes:
-      - ./docker/nginx/nginx.conf:/etc/nginx/modules-available/nginx.conf
     working_dir: /usr/share/nginx/html
     environment:
       - APP_PORT=${APP_PORT}

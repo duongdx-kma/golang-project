@@ -1,9 +1,11 @@
 FROM nginx:alpine
 
-RUN rm -rf /etc/nginx/conf.d/default.conf
+COPY nginx.conf.template /etc/nginx
 
-COPY nginx.conf /etc/nginx/conf.d/proxy.conf
+COPY entrypoint.sh /usr/local/bin/
 
-EXPOSE 80
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+EXPOSE 80 443
 
 CMD ["nginx", "-g", "daemon off;"]
