@@ -6,7 +6,7 @@ RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY nginx.conf.template /etc/nginx
 
 COPY docker-entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 EXPOSE 80 443
 
