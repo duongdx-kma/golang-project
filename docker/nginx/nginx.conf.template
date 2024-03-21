@@ -11,6 +11,12 @@ upstream portainer {
 server {
     listen 80;
 
+    location / {
+        # Serve static files or proxy to backend server
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+    }
+
     location ^~ /api/ {
         rewrite ^/api(.*)$ $1 break;
         proxy_pass http://backend;
