@@ -1,6 +1,18 @@
 version: "3.8"
 
 services:
+  nginx:
+    container_name: nginx-no-dockerfile
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/modules-available/nginx.conf
+    working_dir: /usr/share/nginx/html
+    environment:
+      - APP_PORT=${APP_PORT}
+      - PORTAINER_PORT=9000
+
   backend:
     restart: always
     build:
@@ -48,6 +60,7 @@ services:
 
   portainer:
     image: portainer/portainer-ce:latest
+    container_name: portainer
     ports:
       - "9000:9000"
     volumes:
