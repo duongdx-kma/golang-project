@@ -12,7 +12,7 @@ services:
     ports:
       - "80:80"
     working_dir: /usr/share/nginx/html
-    entrypoint: /usr/local/bin/entrypoint.sh
+#    entrypoint: /usr/local/bin/entrypoint.sh
     environment:
       - APP_PORT=${APP_PORT}
       - PORTAINER_PORT=9000
@@ -65,6 +65,8 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
+    networks:
+      - app_network
     ports:
       - "9000:9000"
     volumes:
