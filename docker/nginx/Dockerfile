@@ -8,5 +8,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 80 443
 
-ENTRYPOINT ["/bin/bash", "-c", "/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
