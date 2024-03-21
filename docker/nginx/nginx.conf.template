@@ -11,7 +11,7 @@ upstream portainer {
 server {
     listen 80;
 
-    location /api {
+    location ^~ /api/ {
         rewrite ^/api(.*)$ $1 break;
         proxy_pass http://backend;
         proxy_set_header Host $host;
@@ -20,7 +20,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    location /portainer {
+    location ^~ /portainer/ {
         rewrite ^/portainer(.*)$ $1 break;
         proxy_pass http://portainer;
         proxy_set_header Host $host;
