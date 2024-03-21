@@ -11,8 +11,10 @@ services:
       - app_network
     ports:
       - "80:80"
+    volumes:
+      - ./nginx.conf.template:/etc/nginx/nginx.conf.template
     working_dir: /usr/share/nginx/html
-#    entrypoint: /usr/local/bin/entrypoint.sh
+    command: /bin/bash -c "envsubst '${APP_PORT} ${PORTAINER_PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/conf.d/nginx.conf && nginx -g 'daemon off;'"
     environment:
       - APP_PORT=${APP_PORT}
       - PORTAINER_PORT=9000
