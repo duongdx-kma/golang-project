@@ -14,7 +14,7 @@ upstream minio {
 }
 
 # minio-console configuration
-upstream minio {
+upstream minio-console {
   server minio-console:${MINIO_CONSOLE_PORT};
 }
 
