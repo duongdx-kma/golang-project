@@ -18,7 +18,7 @@ services:
       - minio
     environment:
       - APP_PORT=${APP_PORT}
-      - PORTAINER_PORT=9000
+      - PORTAINER_PORT=${PORTAINER_PORT}
       - MINIO_PORT=9000
       - MINIO_CONSOLE_PORT=9001
 
@@ -73,7 +73,7 @@ services:
     networks:
       - app_network
     ports:
-      - "9000:9000"
+      - "${PORTAINER_PORT}:${PORTAINER_PORT}"
     volumes:
       - portainer_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
