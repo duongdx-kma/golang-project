@@ -11,6 +11,8 @@ services:
       - app_network
     ports:
       - "80:80"
+      - "${MINIO_PORT}:${MINIO_PORT}"
+      - "${MINIO_CONSOLE_PORT}:${MINIO_CONSOLE_PORT}"
     working_dir: /usr/share/nginx/html
     depends_on:
       - backend
