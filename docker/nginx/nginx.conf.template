@@ -10,7 +10,7 @@ upstream portainer {
 
 # minio configuration
 upstream minio {
-  server portainer:${MINIO_PORT};
+  server minio:${MINIO_PORT};
 }
 
 # minio-console configuration
