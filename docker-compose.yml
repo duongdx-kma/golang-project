@@ -19,8 +19,8 @@ services:
     environment:
       - APP_PORT=${APP_PORT}
       - PORTAINER_PORT=9000
-      - MINIO_PORT=${MINIO_PORT}
-      - MINIO_CONSOLE_PORT=${MINIO_CONSOLE_PORT}
+      - MINIO_PORT=9000
+      - MINIO_CONSOLE_PORT=9001
 
   backend:
     restart: always
